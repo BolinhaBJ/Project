@@ -90,7 +90,7 @@
         Salvar
       </b-button>
 
-       <b-button block size="sm" variant="primary" @click="hide('forget')">
+       <b-button block size="sm" variant="primary" @click="createPDF">
         Imprimir Recibo
       </b-button>
 
@@ -142,9 +142,33 @@ export default {
 
   methods: {
     createPDF(){
-      var doc = new jsPDF("l", "mm", [257, 250]);
+     var doc = new jsPDF("p", "mm", [80, 300]);
+      doc.setFontSize(12).text(`INFORMAÇÕES PAGAMENTO`, 7, 5, null, null);
+      doc.setFontSize(10).text(`Paciente: `, 1, 30, null, null)
+      doc.setFontSize(10).text(this.agendamento.nomePaciente, 17, 30, null, null)
+      doc.setLineDash([0.5]);
+      doc.line(15, 32, 90, 32);
+      doc.setFontSize(10).text(`Data Agendamento: `, 1, 55, null, null);
+      doc.setFontSize(10).text(this.agendamento.data.split("-").reverse().join("/"), 34, 55, null, null)
+      doc.setLineDash([0.5]);
+      doc.line(32, 57, 90, 57);
+      doc.setFontSize(10).text(`Data Pagamento: `, 1, 80, null, null);
+      doc.setFontSize(10).text(this.agendamento.dataPagamento.split("-").reverse().join("/"), 30, 80, null, null)
+      doc.setLineDash([0.5]);
+      doc.line(28, 82, 90, 82);
+      doc.setFontSize(10).text(`Valor Da Consuta: `, 1, 105, null, null);
+      doc.setFontSize(10).text(this.agendamento.valorConsulta, 31, 105, null, null)
+      doc.line(29, 107, 90, 107);
 
-      doc.text()
+      doc.autoTable({
+        margin: { horizontal: 5 },
+        startY: 40,
+        styles: { fontSize: 12 },
+        tableWidth: 131,
+        theme: "grid",
+        colSpan: 5,
+      });
+      window.open(doc.output("bloburl"));
 
     },
 
