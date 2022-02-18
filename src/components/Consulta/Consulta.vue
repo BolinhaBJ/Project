@@ -287,9 +287,19 @@
             </b-tab>
             <b-tab title="Atestado">
               <b-card class="prescricao">
-                <b-button variant="primary" block pill @click="imprimirAtestado"
-                  >Gerar Atestado</b-button
-                >
+                <div class="row d-flex justify-content-center">
+                  <b-dropdown
+                    style="width: 350px; float:"
+                    variant="primary"
+                    id="dropdown-1"
+                    text="Atestado"
+                    class="m-2"
+                  >
+                    <b-dropdown-item style="width: 350px; float:" @click="imprimirAtestado()">Modelo 1</b-dropdown-item>
+                    
+                    <b-dropdown-item style="width: 350px; float:" @click="imprimirAtestado2()">Modelo 2</b-dropdown-item>                 
+                  </b-dropdown>
+                </div>
               </b-card>
             </b-tab>
             <b-tab title="Declaração">
@@ -868,6 +878,18 @@ export default {
       }
     },
 
+    imprimirAtestado2() {
+      if (this.uuidPaciente) {
+        window.open(
+          `/Impressao/atestado2/${this.uuidPaciente}`,
+          "_blank",
+          "toolbar=yes, scrollbars=yes, resizable=yes, top=200, left=200, width=1000, height=1000"
+        );
+      } else {
+        this.showAlert("info", "Por favor selecione o Paciente");
+      }
+    },
+
     gerarLaudo() {
       if (this.uuidPaciente) {
         window.open(
@@ -1044,16 +1066,18 @@ export default {
     loadAgendamentos() {
       this.page = 1;
       this.totalPage = 1;
-      AgendaService.readDateInnerPagination(
-        moment().format("YYYY-MM-DD")
-      ).then((result) => {
-        this.agendamentos = result.data.agendamentos.result;
-        this.totalPage = Math.ceil(result.data.agendamentos.total[0].count / 5);
-        this.agendamentos.map((el) => {
-          console.log(el.data)
-          el.data = moment(el.data).add('day',1).format("DD/MM/YYYY");
-        });
-      });
+      AgendaService.readDateInnerPagination(moment().format("YYYY-MM-DD")).then(
+        (result) => {
+          this.agendamentos = result.data.agendamentos.result;
+          this.totalPage = Math.ceil(
+            result.data.agendamentos.total[0].count / 5
+          );
+          this.agendamentos.map((el) => {
+            console.log(el.data);
+            el.data = moment(el.data).add("day", 1).format("DD/MM/YYYY");
+          });
+        }
+      );
     },
 
     showAlert(icon, title) {

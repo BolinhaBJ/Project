@@ -5,6 +5,7 @@ import CadastroClinica from './components/CadastroClinica/CadastroClinica.vue'
 import CadastroPaciente from './components/CadastroPaciente/Cadastro.vue'
 import ConfigGeral from './components/Configuracoes/ConfiguracoesGeral.vue'
 import ImpressaoAtestado from './components/Consulta/Atestado.vue'
+import ImpressaoAtestado2 from './components/Consulta/Atestado2.vue'
 import Consulta from './components/Consulta/Consulta.vue'
 import ImpressaoLaudo from './components/Consulta/Laudo.vue'
 import Home from './components/Home/Home.vue'
@@ -94,6 +95,14 @@ const routes = [
     {
         path: '/Impressao/atestado/:uuid',
         component: ImpressaoAtestado,
+        meta: {
+            requiresAuth: true
+        }
+    },
+
+    {
+        path: '/Impressao/atestado2/:uuid',
+        component: ImpressaoAtestado2,
         meta: {
             requiresAuth: true
         }
